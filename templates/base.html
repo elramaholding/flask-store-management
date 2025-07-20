@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Store Manager</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .flash-messages { color: green; margin: 10px 0; }
+        .flash-error { color: red; }
+        form { margin: 20px 0; padding: 20px; border: 1px solid #ddd; }
+        ul { list-style: none; padding: 0; }
+        li { padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
+        .actions a { margin-left: 10px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Store Management</h1>
+        {% if current_user.is_authenticated %}
+            <div>
+                <span>Welcome, {{ current_user.username }}!</span>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+        {% endif %}
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
